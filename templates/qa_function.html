@@ -1,0 +1,101 @@
+{% extends "base_two.html" %}
+
+{% block title %}安安的小屋-问答主页 {% endblock %}
+
+{% block head %}
+    <script src="{{ url_for("static",filename="js/get_qafunction.js") }}"></script>
+
+    <style>
+        body {
+            background-image: url("/static/img/bj9.jpeg");
+            background-position: center 0;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            -webkit-background-size: cover;
+            -o-background-size: cover;
+            -moz-background-size: cover;
+            -ms-background-size: cover;
+        }
+
+    </style>
+{% endblock %}
+
+{% block body %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid" style="background-color: #e3f2fd;">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active ms-5" aria-current="page"
+                           href="{{ url_for("article.new_article") }}">文章</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active ms-5" aria-current="page"
+                           href="{{ url_for("user.developer_diary") }}">开发者日记</a>
+                    </li>
+                    <li class="nav-item">
+                    <li class="nav-item">
+                        <a class="nav-link active ms-5" aria-current="page"
+                           href="{{ url_for("qa.qa_function_homepage") }}">你问我答</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled ms-5" aria-current="page" href="#">图片(开发中)</a>
+                    </li>
+                    <li>
+                        <a class="nav-link disabled ms-5">视频(开发中)</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <script>
+        var toastElList = Array.prototype.slice.call(document.querySelectorAll('.toast'))
+        var toastList = toastElList.map(function (toastEl) {
+            return new bootstrap.Toast(toastEl, option)
+        })
+    </script>
+    {% if user %}
+        <a class="btn btn-primary mt-5" href="{{ url_for("qa.user_post_qa_function") }}" id="liveToastBtn">发布问答 <span
+                class="sr-only"></span></a>
+
+    {% else %}
+        <button type="button" class="btn btn-primary mt-5" id="liveToastBtn">发布问答</button>
+
+        <div class="toast mt-2" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-body ">
+                <img src="/static/img/toast1.png" height="30" width="30" class="rounded me-2" alt="图图不见了">
+                你还没有登录哦，请先登录吧！
+                <div class="mt-2 pt-2 border-top">
+                    <a class="btn btn-outline-primary ms-2 btn-sm" href="{{ url_for("user.login") }}">登录 <span
+                            class="sr-only"></span></a>
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">取消</button>
+                </div>
+            </div>
+        </div>
+
+    {% endif %}
+
+    {% for function in functions %}
+        <div class="row row-cols-1 row-cols-md-2 g-4 mt-3">
+        </div>
+        <div class="card w-75 m-auto mt-4" style="margin-top: 20px">
+            <div class="card-body" style="text-align: center">
+                <h5 class="card-title" name="function_title">{{ function.title }}</h5>
+                <a href="{{ url_for("qa.qa_function_detail",function_id=function.id) }}" class="btn btn-primary">
+                    查看问答</a>
+            </div>
+            <div class="card-footer " style="text-align: center">
+                <span class="text-muted" name="function_user">作者：{{ function.author.name }}</span>
+                <small class="text-muted ms-5" style="" name="function_time">发布时间:{{ function.create_time }}</small>
+            </div>
+        </div>
+    {% endfor %}
+    <script>
+        $(document).ready(function () {
+            $("#liveToastBtn").click(function () {
+                $('.toast').toast('show');
+            });
+        });
+    </script>
+{% endblock %}

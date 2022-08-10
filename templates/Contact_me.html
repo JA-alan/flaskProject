@@ -1,0 +1,170 @@
+{% extends "base_two.html" %}
+
+{% block title %}
+{% endblock %}
+
+<link rel="stylesheet" href="{{ url_for("static",filename="/css/index.css") }}">
+{% block head %}
+    <style>
+        html,
+        body {
+            margin: 0;
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            background: #0cebeb;
+            /* fallback for old browsers */
+            background: -webkit-linear-gradient(to right, #0cebeb, #20e3b2, #29ffc6);
+            /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to right, #0cebeb, #20e3b2, #29ffc6);
+            /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            /* uigradients 网站 */
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="media mr-auto mt-2">
+        <a class="btn btn-outline-success" href="{{ url_for("qa.index") }}" id="liveToastBtn">返回 <span
+                class="sr-only"></span></a>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <img src="{{ url_for("static",filename="/img/touxiang1.jpeg") }}" width="40" height="40"
+                 alt="图图不见了">
+            <span class="username ms-1">程序猿</span>
+            <span class="create-time ms-5">日期：2022-6-18 00:00:00</span>
+        </div>
+
+        <div class="card-body">
+            <blockquote class=" mb-0" style="text-align: left">
+                            <span class="comment-content">哈喽，各位小伙伴们大家好，欢迎来到这里哦！有什么想对我说的话，
+                            和对我网站有各种好的建议和意见都可以提哦，如果你要是找我合作的话，那你真的太有眼光啦
+                                  |——网站架构：python+jinja2</span>
+                <div>
+                    <footer class="blockquote-footer" style="text-align: right">个性签名： <cite
+                            title="Source Title">恋爱找我，我超甜</cite>
+                    </footer>
+                </div>
+            </blockquote>
+        </div>
+    </div>
+    {% if user %}
+        <form action="{{ url_for("user.contact_me") }}" method="post">
+
+            <div class="row">
+                <div class="col"></div>
+                <div class="col-8">
+                    <div class="mb-2">
+
+                        <label for="exampleFormControlInput1"></label>
+                        <input type="text" name="content" class="form-control" id="exampleFormControlInput1"
+                               placeholder="请填写留言">
+                        <div class="media mt-1" style="text-align: right">
+                            {% for message in get_flashed_messages() %}
+                                <div class="form-group">
+                                    <div class="text-danger" style="font-size:14px">{{ message }}</div>
+                                </div>
+                            {% endfor %}
+                            <button type="submit" href="" class="btn btn-primary">留言</button>
+                            <div class="form-row align-items-center">
+                                <div class="col-auto my-1">
+                                    <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect">选择分类</label>
+                                    <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="title">
+                                        <option value="全部" name="title">全部</option>
+                                        <option value="找我合作" name="1">找我合作</option>
+                                        <option value="投诉建议" title="1">投诉建议</option>
+                                        <option value="联系我">联系我</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col"></div>
+            </div>
+        </form>
+    {% endif %}
+
+    <div class="row">
+
+        <div class="col"></div>
+        <div class="col-8">
+            {% for root in roots %}
+                <div class="card mt-2">
+                    <div class="card-header">
+                        <img src="{{ url_for("static",filename="/img/touxiang3.jpeg") }}" width="40" height="40"
+                             alt="图图不见了">
+                        <span class="username">{{ root.author.name }}</span>
+                        <span class="create-time ms-5">日期：{{ root.create_time }}</span>
+                    </div>
+                    <div class="card-body">
+                        <blockquote class=" mb-0" style="text-align: center">
+                            <span class="comment-content">{{ root.content }}</span>
+                        </blockquote>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="col"></div>
+    </div>
+    <canvas id="canvas"></canvas>
+<script>
+    const WIDTH = document.documentElement.clientWidth;
+    const HEIGHT = document.documentElement.clientHeight;
+
+    let ctx = document.getElementById('canvas'),
+        content = ctx.getContext('2d'),
+        round = [],
+        initRoundPopulation = 80;
+    ctx.width = WIDTH;
+    ctx.height = HEIGHT;
+
+    function box(index, x, y) {
+        this.index = index;
+        this.x = x;
+        this.y = y;
+        this.r = Math.random() * 5 + 1;
+        var alpha = (Math.floor(Math.random() * 10) + 1) / 10 / 2;
+        this.color = "rgba(255,255,255," + alpha + ")";
+    }
+
+    box.prototype.draw = function () {
+        content.fillStyle = this.color;
+        content.shadowBlur = this.r * 2;
+        content.beginPath();
+        content.arc(this.x, this.y, this.r, 0, 2 * Math.PI, false);
+        content.closePath();
+        content.fill();
+    };
+
+    function animate() {
+        content.clearRect(0, 0, WIDTH, HEIGHT);
+        for (var i in round) {
+            round[i].move();
+        }
+        requestAnimationFrame(animate)
+    }
+
+    box.prototype.move = function () {
+        this.y -= 0.30;   //  上升移动速度
+        if (this.y <= -10) {
+            this.y = HEIGHT + 10;
+        }
+        this.draw();
+    };
+
+    function init() {
+        for (var i = 0; i < initRoundPopulation; i++) {
+            round[i] = new box(i, Math.random() * WIDTH, Math.random() * HEIGHT);
+            round[i].draw();
+        }
+        animate();
+    }
+
+    init();
+</script>
+{% endblock %}

@@ -1,0 +1,127 @@
+﻿{% extends "base.html" %}
+{% block title %}安安的小屋-文章 {% endblock %}
+{% block head %}
+    <script src="{{ url_for("static",filename="js/get_article.js") }}"></script>
+
+    <link rel="stylesheet" href="{{ url_for("static",filename="js/article/style.css") }}">
+    <style>
+        body {
+            background-image: url("/static/img/bj7.png");
+            background-position: center 0;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            -webkit-background-size: cover;
+            -o-background-size: cover;
+            -moz-background-size: cover;
+            -ms-background-size: cover;
+        }
+
+    </style>
+{% endblock %}
+{% block body %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid" style="background-color: #e3f2fd;">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active ms-5" aria-current="page"
+                           href="{{ url_for("article.new_article") }}">文章</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active ms-5" aria-current="page"
+                           href="{{ url_for("user.developer_diary") }}">开发者日记</a>
+                    </li>
+                    <li class="nav-item">
+                    <li class="nav-item">
+                        <a class="nav-link active ms-5" aria-current="page"
+                           href="{{ url_for("qa.qa_function_homepage") }}">你问我答</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled ms-5" aria-current="page" href="#">图片(开发中)</a>
+                    </li>
+                    <li>
+                        <a class="nav-link disabled ms-5">视频(开发中)</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    {% if user and user.user_type == 9999 %}
+        <a class="btn btn-primary mt-5 ms-5" href="{{ url_for("article.user_post_article") }}" id="liveToastBtn">发表文章
+            <span
+                    class="sr-only"></span></a>
+    {% elif user %}
+        <button type="button" class="btn btn-primary mt-5" id="liveToastBtn">发表文章</button>
+        <div class="toast mt-2" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-body ">
+                <img src="/static/img/toast1.png" height="30" width="30" class="rounded me-2" alt="图图不见了">
+                你没有权限哦，快去联系管理员吧
+                <div class="mt-2 pt-2 border-top">
+                    <a class="btn btn-outline-primary ms-2 btn-sm" href="{{ url_for("user.contact_me") }}">去联系 <span
+                            class="sr-only"></span></a>
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">取消</button>
+                </div>
+            </div>
+        </div>
+        <script>
+            $(document).ready(function () {
+                $("#liveToastBtn").click(function () {
+                    $('.toast').toast('show');
+                });
+            });
+        </script>
+    {% else %}
+        <button type="button" class="btn btn-primary mt-5 ms-5" id="liveToastBtn">发表文章</button>
+        <div class="toast mt-2" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-body ">
+                <img src="/static/img/toast1.png" height="30" width="30" class="rounded me-2" alt="图图不见了">
+                你还没有登录哦，请先登录吧！
+                <div class="mt-2 pt-2 border-top">
+                    <a class="btn btn-outline-primary ms-2 btn-sm" href="{{ url_for("user.login") }}">登录 <span
+                            class="sr-only"></span></a>
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">取消</button>
+                </div>
+            </div>
+        </div>
+        <script>
+            $(document).ready(function () {
+                $("#liveToastBtn").click(function () {
+                    $('.toast').toast('show');
+                });
+            });
+        </script>
+    {% endif %}
+    {% if articles %}
+        <div class="row row-cols-1 row-cols-md-3">
+            {% for article in articles %}
+                <div class="cards col-8">
+                    <div class="card-actions">
+                        <a href="{{ url_for("article.article_detail",article_id=article.id) }}"
+                           class="btn btn-primary" type="submit">查看详情</a>
+                    </div>
+                    <div class="card">
+                        <div class="card__image-holder">
+                            <img class="card__image" src="/static/img/bj2.jpeg" height="225" alt="wave"/>
+                        </div>
+                        <div class="card-title">
+                            <a href="#" class="toggle-info btn">
+                                <span class="left"></span>
+                                <span class="right"></span>
+                            </a>
+                            <h5 class="card-title" name="article_title">{{ article.title }}</h5>
+                        </div>
+                        <div class="card-flap flap1">
+                            <div class="card-description">{{ article.head }}</div>
+                            <div class="card-flap flap2">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    <script type="text/javascript" src="/static/js/article/jquery.min.js"></script>
+    <script src="{{ url_for("static",filename="js/article/script.js") }}"></script>
+{% endblock %}

@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block title %}安安的小屋-资讯 {% endblock %}
+
+{% block head %}
+{% endblock %}
+{% block body %}
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid" style="background-color: #e3f2fd;">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active ms-5" aria-current="page"
+                           href="{{ url_for("article.new_article") }}">文章</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active ms-5" aria-current="page" href="{{ url_for("user.developer_diary") }}">开发者日记</a>
+                    </li>
+                    <li class="nav-item">
+                    <li class="nav-item">
+                        <a class="nav-link active ms-5" aria-current="page"
+                           href="{{ url_for("qa.qa_function_homepage") }}">你问我答</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled ms-5" aria-current="page" href="#">图片(开发中)</a>
+                    </li>
+                    <li>
+                        <a class="nav-link disabled ms-5">视频(开发中)</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+<div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="/static/photo/F1-1.png" class="d-block w-100" alt="..." height="500">
+      <div class="carousel-caption d-none d-md-block">
+        <h5>F1资讯</h5>
+        <p>F1加拿大站｜周冠宇：我非常想完成比赛</p>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <img src="/static/photo/F1-2.png" class="d-block w-100" alt="..." height="500">
+      <div class="carousel-caption d-none d-md-block">
+        <h5>F1资讯</h5>
+        <p>F1加拿大站｜周冠宇职业生涯首次进排位赛前十</p>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <img src="/static/photo/F1-3.jpeg" class="d-block w-100" alt="..." height="500">
+      <div class="carousel-caption d-none d-md-block">
+        <h5>F1资讯</h5>
+        <p>F1加拿大站排位赛：维斯塔潘夺杆</p>
+      </div>
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+    {% for function in functions %}
+        <div class="row row-cols-1 row-cols-md-2 g-4 mt-3">
+        </div>
+        <div class="card w-75 m-auto mt-4" style="margin-top: 20px">
+            <div class="card-body" style="text-align: center">
+                <h5 class="card-title" name="function_title">{{ function.title }}</h5>
+                <a href="{{ url_for("qa.qa_function_detail",function_id=function.id) }}" class="btn btn-primary">
+                    查看问答</a>
+            </div>
+            <div class="card-footer " style="text-align: center">
+                <span class="text-muted" name="function_user">作者：{{ function.author.name }}</span>
+                <small class="text-muted ms-5" style="" name="function_time">发布时间:{{ function.create_time }}</small>
+            </div>
+        </div>
+    {% endfor %}
+            <div class="row row-cols-1 row-cols-md-2 g-4 mt-3">
+            {% for article in articles %}
+                <div class="col ">
+                    <div class="card">
+                        <img class="card-img-top" alt="..." src="/static/img/bj2.jpeg">
+                        <div class="card-body">
+                            <h5 class="card-title" name="article_title">{{ article.title }}</h5>
+                            <p class="card-text" name="article_head">{{ article.head }}</p>
+                            <a href="{{ url_for("art.article_detail",article_id=article.id) }}" class="btn btn-primary"
+                               type="submit">查看详情</a>
+                        </div>
+                        <div class="card-footer">
+                            <span class="text-muted" name="article_user">作者：{{ article.author.name }}</span>
+
+                            <small class="text-muted ms-2" style=""
+                                   name="article_time">{{ article.create_time }}发布</small>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+{% endblock %}
+
+</body>

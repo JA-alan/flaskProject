@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}{{ article.title }}{% endblock %}
+{% block head %}
+    <style>
+        body {
+            background-image: url("/static/img/bj13.jpeg");
+            background-position: center 0;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            -webkit-background-size: cover;
+            -o-background-size: cover;
+            -moz-background-size: cover;
+            -ms-background-size: cover;
+        }
+
+    </style>
+{% endblock %}
+{% block body %}
+    {% if article %}
+        <div class="media mr-auto mt-2">
+            <a class="btn btn-outline-success" href="{{ url_for("article.new_article") }}" id="liveToastBtn">返回 <span
+                    class="sr-only"></span></a>
+        </div>
+        <div class="media mr-auto mt-2 text-center">
+            <div class="col ">
+                <div class="card-footer">
+                    <span class="text-muted " name="article_user">作者：{{ article.author.name }}</span>
+                    <small class="text-muted ms-5 " style="" name="article_time">{{ article.create_time }}发布</small>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title" name="article_title">{{ article.title }}</h5>
+                        <p class="card-text" name="article_head">{{ article.head }}</p>
+                        <p class="card-text" name="article_head">{{ article.content }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    <form action="{{ url_for("article.article_detail",article_id=article.id) }}" method="post">
+        <div class="row mt-5">
+            <div class="col"></div>
+            <div class="col-8">
+                <div class="mb-2">
+                    <div class="media" style="text-align: right">
+                        <p class="comment-group-title" style="text-align: left">评论:({{ article.answers|length }})</p>
+                    </div>
+                    <input type="text" name="content" class="form-control" id="exampleFormControlInput1"
+                           placeholder="请填写评论">
+                    <div class="media mt-1" style="text-align: right">
+                        {% for message in get_flashed_messages() %}
+                            <div class="form-group">
+                                <div class="text-danger" style="font-size:14px">{{ message }}</div>
+                            </div>
+                        {% endfor %}
+                        <button type="submit" href="" class="btn btn-primary"> 评论</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col"></div>
+        </div>
+    </form>
+    <div class="row">
+        <div class="col"></div>
+        <div class="col-8">
+            {% for answer in article.answers %}
+                <div class="card">
+                    <div class="card-header">
+                        <img src="{{ url_for("static",filename="/img/touxiang2.jpeg") }}" width="40" height="40"
+                             alt="图图不见了">
+                        <span class="username">{{ answer.author.name }}</span>
+                        <span class="create-time ms-5">{{ answer.create_time }}</span>
+                    </div>
+                    <div class="card-body">
+                        <blockquote class=" mb-0" style="text-align: center">
+                            <span class="comment-content">{{ answer.answer_content }}</span>
+                            <div>
+                                <footer class="blockquote-footer" style="text-align: right">个性签名： <cite
+                                        title="Source Title">世上我最帅</cite>
+                                </footer>
+                            </div>
+                        </blockquote>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="col"></div>
+    </div>
+{% endblock %}

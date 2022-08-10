@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}{{ function.function_title }}{% endblock %}
+<link rel="stylesheet" href="{{ url_for("static",filename="/css/function_detail.css") }}">
+<link rel="stylesheet" href="{{ url_for("static",filename="/css/index.css") }}">
+
+{% block head %}
+    <style>
+        body {
+            background-image: url("/static/img/bj14.jpeg");
+            background-position: center 0;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            -webkit-background-size: cover;
+            -o-background-size: cover;
+            -moz-background-size: cover;
+            -ms-background-size: cover;
+        }
+
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="media mr-auto mt-2">
+        <a class="btn btn-outline-success" href="{{ url_for("qa.qa_function_homepage") }}" id="liveToastBtn">返回 <span
+                class="sr-only"></span></a>
+    </div>
+    <form action="" method="post">
+        <div class="row" style="margin-top: 20px;">
+            <div class="col content"></div>
+            <div class="col-8" style="background-color: #f9fafb;padding: 20px">
+                <h4 class="page-title " style="text-align: center;">{{ function.title }}</h4>
+                <h5 class="page-data">{{ function.content }}</h5>
+                <hr>
+                <p class="qafunction-info" style="text-align: center;">
+                    <span>作者:{{ function.author.name }}</span>
+                    <span class="ms-5">发布时间:{{ function.create_time }}</span>
+                </p>
+            </div>
+            <div class="col"></div>
+        </div>
+        <div class="row">
+            <div class="col"></div>
+            <div class="col-8">
+                <div class="media" style="text-align: right">
+                    <p class="comment-group-title" style="text-align: left">评论({{ function.answers|length }}):</p>
+                </div>
+            </div>
+            <div class="col"></div>
+        </div>
+    </form>
+    <form action="{{ url_for("qa.post_answer",function_id=function.id) }}" method="post">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col-8">
+                <div class="mb-2">
+                    <input type="text" name="content" class="form-control" id="exampleFormControlInput1"
+                           placeholder="请填写评论">
+                    <div class="media mt-1" style="text-align: right">
+                        {% for message in get_flashed_messages() %}
+                            <div class="form-group">
+                                <div class="text-danger" style="font-size:14px">{{ message }}</div>
+                            </div>
+                        {% endfor %}
+                        <button type="submit" href="" class="btn btn-primary light"> 评论</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col"></div>
+        </div>
+    </form>
+    <div class="row">
+        <div class="col"></div>
+        <div class="col-8">
+            {% for answer in function.answers %}
+                <div class="card">
+                    <div class="card-header">
+                        <img src="{{ url_for("static",filename="/img/touxiang2.jpeg") }}" width="40" height="40"
+                             alt="图图不见了">
+                        <span class="username">{{ answer.author.name }}</span>
+                        <span class="create-time ms-5">{{ answer.create_time }}</span>
+                    </div>
+                    <div class="card-body">
+                        <blockquote class=" mb-0" style="text-align: center">
+                            <span class="comment-content">{{ answer.answer_content }}</span>
+                            <div>
+                                <footer class="blockquote-footer" style="text-align: right">个性签名： <cite
+                                        title="Source Title">世上我最帅</cite>
+                                </footer>
+                            </div>
+                        </blockquote>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="col"></div>
+    </div>
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}安安的小屋-注册 {% endblock %}
+
+{% block head %}
+    <script src="{{ url_for("static",filename="jquery/jquery.3.6.0.js") }}"></script>
+    <script src="{{ url_for("static",filename="js/register.js") }}"></script>
+    <script src="{{ url_for("static",filename="js/global.js") }}"></script>
+
+{% endblock %}
+
+{% block body %}
+    <div class="row mt-5">
+        <div class="col">
+        </div>
+        <div class="col">
+            <form method="post" action="{{ url_for("user.register") }}">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">用户名</label>
+                    <input type="text" class="form-control" placeholder="请输入6-20位英文或数字" id="InputUser"
+                           aria-describedby="emailHelp" name="user">
+                    <small id="emailHelp" class="form-text text-muted">
+                    </small>
+                </div>
+
+                <div class="form-group mt-2">
+                    <label for="exampleInputPassword1">密码</label>
+                    <input type="password" class="form-control" placeholder="请输入6-20位密码" id="exampleInputPassword1"
+                           name="password">
+                </div>
+                <div class="form-group mt-2">
+                    <label for="exampleInputPassword2">确认密码</label>
+                    <input type="password" class="form-control" placeholder="再次输入您的密码" name="psd_two" id="exampleInputPassword2">
+                </div>
+
+                <div class="form-group mt-2">
+                    <label for="exampleInputEmail1">昵称</label>
+                    <input type="text" class="form-control" placeholder="输入您的昵称" id="exampleInputEmail1"
+                           aria-describedby="emailHelp" name="name">
+                    <small id="emailHelp" class="form-text text-muted">
+                    </small>
+                </div>
+                <div class="form-group mt-2">
+                    <label for="exampleInputEmail1">邮箱</label>
+                    <input type="email" class="form-control" placeholder="电子邮箱：@.com" id="exampleInputEmail1"
+                           aria-describedby="emailHelp" name="email">
+                    <small id="emailHelp" class="form-text text-muted">用户资料仅做存储，无任何商业行为</small>
+                </div>
+                <div class="form-group mt-2">
+                    <label for="exampleInputEmail1">验证码</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="输入验证码" id="exampleInputEmail1"
+                               aria-describedby="emailHelp" name="captcha">
+                        <button class="btn btn-primary" type="button" id="captcha-btn">获取验证码</button>
+                    </div>
+                    <small id="emailHelp" class="form-text text-muted"></small>
+                </div>
+                {% for message in get_flashed_messages() %}
+                    <div class="form-group">
+                        <div class="text-danger" style="font-size:14px">{{ message }}</div>
+                    </div>
+                {% endfor %}
+                <div class="d-grid gap-2 mt-4">
+                    <button class="btn btn-primary">立即注册</button>
+                </div>
+            </form>
+        </div>
+        <div class="col"></div>
+    </div>
+    <script>
+    InputUser.onchange = function(){
+		var InputUser = this.value;
+        var reg;
+        reg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/;
+		if(!reg.test(InputUser)){
+            alert("账号长度6-20位，由数字和字母组成,请重新输入！");
+            return false;
+		}
+	    }
+    </script>
+{% endblock %}

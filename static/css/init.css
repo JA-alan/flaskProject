@@ -1,0 +1,17 @@
+body {
+    background-color: #e9ecef;
+    padding-bottom: 80px;
+}
+
+/*全局背景图片*/
+/*body {*/
+/*    background-image: url("/static/img/bj7.png");*/
+/*    background-position: center 0;*/
+/*    background-repeat: no-repeat;*/
+/*    background-attachment: fixed;*/
+/*    background-size: cover;*/
+/*    -webkit-background-size: cover;*/
+/*    -o-background-size: cover;*/
+/*    -moz-background-size: cover;*/
+/*    -ms-background-size: cover;*/
+/*}*/

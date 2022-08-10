@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}安安的小屋-发布文章 {% endblock %}
+{% block head %}
+{% endblock %}
+{% block body %}
+    <div class="media mr-auto mt-2">
+        <a class="btn btn-outline-success" href="{{ url_for("article.new_article") }}" id="liveToastBtn">返回 <span
+                class="sr-only"></span></a>
+    </div>
+    <div class="mx-auto " style="width: 200px;">
+        <p class="h3">请开始你的表演</p>
+
+    </div>
+    <form method="post" action="{{ url_for("article.user_post_article") }}" enctype="multipart/form-data">
+        <div class="form-group mt-2">
+            <label for="exampleFormControlInput1">文章标题</label>
+            <input type="text" autocomplete="off" class="form-control" name="title" id="exampleFormControlInput1"
+                   placeholder="例：python是怎样炼成的">
+        </div>
+        <div class="form-group mt-2">
+            <label for="exampleFormControlInput1">前言</label>
+            <input type="text" autocomplete="off" class="form-control" name="head" id="exampleFormControlInput1"
+                   placeholder="例：这一节课就是讲python是怎样炼成的">
+        </div>
+        <div class="form-group mt-2">
+            <label for="exampleFormControlTextarea1">正文</label>
+            <textarea class="form-control" name="content" id="exampleFormControlTextarea1" rows="15"
+                      placeholder="注意：不要超过10000字"></textarea>
+        </div>
+        <div class="form-group mt-2">
+            <label for="exampleFormControlFile1">选择您的封面图</label>
+            <input type="file" name="file" class="form-control-file" id="exampleFormControlFile1">
+        </div>
+        {% for message in get_flashed_messages() %}
+            <div class="form-group" style="text-align: right;">
+                <div class="text-danger" style="font-size:14px">{{ message }}</div>
+            </div>
+        {% endfor %}
+        <div class="form-group" style="text-align: right;">
+            <button class="btn btn-outline-success mt-2" type="submit" href="#">发布</button>
+            <button type="button" class="btn btn-outline-success mt-2" href="#">草稿箱</button>
+        </div>
+    </form>
+{% endblock %}
