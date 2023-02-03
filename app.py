@@ -60,4 +60,5 @@ def context_processor():
 
 # init_logging()
 if __name__ == '__main__':
+    init_logging()
     app.run()
