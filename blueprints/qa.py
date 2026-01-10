@@ -192,12 +192,15 @@ def post_answer(function_id):
 @bp.route("user/search")  # 搜索
 def user_search():
     q = request.args.get("query")
-    functions = FunctionModel.query.filter(
-        or_(FunctionModel.title.contains(q), FunctionModel.content.contains(q))).order_by(db.text("-create_time")).all()
-    articles = ArticleModel.query.filter(
-        or_(ArticleModel.title.contains(q), ArticleModel.content.contains(q), ArticleModel.head.contains(q))).order_by(
-        db.text("-create_time")).all()
-    return render_template("public_question.html", functions=functions, articles=articles)
+    if q == "":
+        return render_template("public_question.html")
+    else:
+        functions = FunctionModel.query.filter(
+            or_(FunctionModel.title.contains(q), FunctionModel.content.contains(q))).order_by(db.text("-create_time")).all()
+        articles = ArticleModel.query.filter(
+            or_(ArticleModel.title.contains(q), ArticleModel.content.contains(q), ArticleModel.head.contains(q))).order_by(
+            db.text("-create_time")).all()
+        return render_template("public_question.html", functions=functions, articles=articles)
 
 
 @bp.route("user/message")  # 消息

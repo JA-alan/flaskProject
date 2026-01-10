@@ -24,11 +24,10 @@ $(document).ready(function () {
                 $(this)
                     .css({zIndex: zindex})
                     .addClass("show");
+                console.log("³öÈ¥")
 
             }
-
             zindex++;
-
         } else {
             // no cards in view
             $("div.cards")

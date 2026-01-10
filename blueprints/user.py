@@ -12,7 +12,8 @@ from models import Email_Captcha_Model, User_Model, Developer_Diary_Model, Root_
 import global_setting
 from .forms import RegisterForm, LoginForm, Forgot_PasswordForm
 from werkzeug.security import generate_password_hash, check_password_hash
-from decorators import Email_Captcha
+from decorators import Email_Captcha,login_required
+
 
 bp = Blueprint("user", __name__, url_prefix="/")
 
@@ -156,7 +157,7 @@ def post_developer_diary():
     if request.method == "POST":
         title = request.form.get("title")
         content = request.form.get("content")
-        type = request.form.get("type")
+        msg_type = request.form.get("type")
         if title is None or content is None:
             return global_setting.not_request_parameters()
         elif len(request.form) < 3 or len(request.form) > 3:
@@ -165,7 +166,7 @@ def post_developer_diary():
             create_time = datetime.now()
             update_time = datetime.now()
             diary_id = "D" + global_setting.inset_token().upper()
-            cont = Developer_Diary_Model(type=type, update_time=update_time, title=title, content=content,
+            cont = Developer_Diary_Model(type=msg_type, update_time=update_time, title=title, content=content,
                                          diary_id=diary_id, author_id=1, create_time=create_time)
             db.session.add(cont)
             db.session.commit()
@@ -349,6 +350,7 @@ def My_space_function():
 
 
 @bp.route("/fenye")
+@login_required
 def fenye():
     articles = ArticleModel.query.filter_by(author_id=g.user.id)[1]
     return render_template("fenye.html", articles=articles)
